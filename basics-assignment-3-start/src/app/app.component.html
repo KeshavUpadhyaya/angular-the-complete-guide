@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <ol>
+        <li>Add A button which says 'Display Details'</li>
+        <li>
+          Add a paragraph with any content of your choice (e.g. 'Secret Password
+          = tuna')
+        </li>
+        <li>
+          Toggle the displaying of that paragraph with the button created in the
+          first step
+        </li>
+        <li>
+          Log all button clicks in an array and output that array below the
+          secret paragraph (maybe log a timestamp or simply an incrementing
+          number)
+        </li>
+        <li>
+          Starting at the 5th log item, give all future log items a blue
+          background (via ngStyle) and white color (ngClass)
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-primary" (click)="toggleParagraph()">
+  Display details
+</button>
+
+<hr />
+
+<p *ngIf="showParagraph">
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sapien
+  arcu, posuere vitae vehicula sit amet, tristique quis nulla. In dolor erat,
+  dignissim sit amet venenatis non, porta eget ligula. Vestibulum ante ipsum
+  primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum
+  vitae elit tempor, euismod lectus vitae, vulputate nisl. Ut bibendum nulla
+  faucibus, dignissim justo id, sollicitudin elit. Nam nec tortor vel tellus
+  laoreet laoreet. Sed erat odio, vehicula in leo eget, malesuada volutpat leo.
+  Nunc id libero lorem. Donec id semper tellus, et mattis sapien. Vestibulum non
+  pretium lorem, sit amet laoreet sem. Aliquam non eros eu purus eleifend rutrum
+  et quis ante. Fusce in volutpat purus. Quisque volutpat orci a dui placerat
+  faucibus eget a dolor. Pellentesque nibh lectus, malesuada in tempor blandit,
+  gravida ac massa.
+</p>
+
+<hr />
+
+<p *ngFor="let i of timeArray; let index = index">
+  <span
+    [ngStyle]="{ backgroundColor: getColor(i) }"
+    [ngClass]="{ whiteText: i >= 5 }"
+  >
+    {{ i + ' ' + index }}</span
+  >
+</p>
