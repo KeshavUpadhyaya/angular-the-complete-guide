@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <!--
+          Create a Form with the following Controls and Validators
+          1) Project Name (should not be empty)
+          2) Mail (should not be a empty and a valid email)
+          3) Project Status Dropdown, with three values: 'Stable', 'Critical', 'Finished'
+          4) Submit Button
+
+          Add your own Validator which doesn't allow "Test" as a Project Name
+
+          Also implement that Validator as an async Validator (replace the other one)
+
+          Upon submitting the form, simply print the value to the console
+      -->
+
+      <form (ngSubmit)="onSubmit()" [formGroup]="form">
+        <div>
+          <label for="project-name">Project name</label>
+          <input
+            class="form-control"
+            type="text"
+            name="project-name"
+            id="project-name"
+            formControlName="projectName"
+          />
+        </div>
+
+        <span
+          *ngIf="
+            !form.get('projectName').valid && form.get('projectName').touched
+          "
+          class="help-block"
+        >
+          <span
+            class="help-block"
+            *ngIf="form.get('projectName').hasError('badProjectName')"
+          >
+            This name is invalid!
+          </span>
+          <span
+            class="help-block"
+            *ngIf="form.get('projectName').hasError('required')"
+          >
+            This field is required!
+          </span>
+        </span>
+
+        <div>
+          <label for="email">Email</label>
+          <input
+            formControlName="email"
+            class="form-control"
+            type="text"
+            name="email"
+            id="email"
+          />
+        </div>
+        <span
+          class="help-block"
+          *ngIf="!form.get('email').valid && form.get('email').touched"
+        >
+          Email is invalid
+        </span>
+
+        <div>
+          <label for="status">Project status</label>
+          <select formControlName="status" class="form-control" name="status">
+            <option value="stable">Stable</option>
+            <option value="critical">Critical</option>
+            <option value="finished">Finished</option>
+          </select>
+        </div>
+
+        <br />
+
+        <div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
