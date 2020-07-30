@@ -11,22 +11,29 @@ export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
   recipeSelected = new Subject<Recipe>();
 
-  private recipes: Recipe[] = [
-    new Recipe(
-      'Mango fries',
-      'This is simply a test',
-      'https://cdn.pixabay.com/photo/2017/03/17/10/29/breakfast-2151201__340.jpg',
-      [new Ingredient('Mango', 1), new Ingredient('French fires', 20)]
-    ),
-    new Recipe(
-      'Big fat burger',
-      'This is simply a test',
-      'https://cdn.pixabay.com/photo/2017/03/17/10/29/breakfast-2151201__340.jpg',
-      [new Ingredient('buns', 2), new Ingredient('potato', 1)]
-    ),
-  ];
+  // private recipes: Recipe[] = [
+  //   new Recipe(
+  //     'Mango fries',
+  //     'This is simply a test',
+  //     'https://cdn.pixabay.com/photo/2017/03/17/10/29/breakfast-2151201__340.jpg',
+  //     [new Ingredient('Mango', 1), new Ingredient('French fires', 20)]
+  //   ),
+  //   new Recipe(
+  //     'Big fat burger',
+  //     'This is simply a test',
+  //     'https://cdn.pixabay.com/photo/2017/03/17/10/29/breakfast-2151201__340.jpg',
+  //     [new Ingredient('buns', 2), new Ingredient('potato', 1)]
+  //   ),
+  // ];
+
+  private recipes: Recipe[] = [];
 
   constructor(private slService: ShoppingListService) {}
+
+  setRecipes(recipes: Recipe[]): void {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
   getRecipes(): Recipe[] {
     // getting only a copy
