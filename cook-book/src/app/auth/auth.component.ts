@@ -8,8 +8,8 @@ import {
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { AlertComponent } from '../../shared/alert/alert.component';
-import { PlaceholderDirective } from '../../shared/placeholder.directive';
+import { AlertComponent } from '../shared/alert/alert.component';
+import { PlaceholderDirective } from '../shared/placeholder.directive';
 import { AuthResponseData, AuthService } from './auth.service';
 
 @Component({
@@ -57,7 +57,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     if (this.isLoginMode) {
       authObs = this.authService.login(email, password);
     } else {
-      authObs = this.authService.signup(email, password);
+      authObs = this.authService.signUp(email, password);
     }
 
     authObs.subscribe(

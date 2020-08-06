@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 import { User } from './user.model';
 
 export interface AuthResponseData {
@@ -25,10 +26,11 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  signup(email: string, password: string): Observable<any> {
+  signUp(email: string, password: string): Observable<any> {
     return this.http
       .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCYMdmJRPT0VsyYrSGfg8oK6JiJFq8b-2M',
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' +
+          environment.firebaseAPIKey,
         {
           email,
           password,
@@ -51,7 +53,8 @@ export class AuthService {
   login(email: string, password: string): Observable<any> {
     return this.http
       .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCYMdmJRPT0VsyYrSGfg8oK6JiJFq8b-2M',
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
+          environment.firebaseAPIKey,
         {
           email,
           password,
@@ -85,24 +88,24 @@ export class AuthService {
   }
 
   private handleError(errorRes: HttpErrorResponse): Observable<any> {
-    let errorMesaage = 'An unknown error occurred';
+    let errorMessage = 'An unknown error occurred';
     if (!errorRes.error || !errorRes.error.error) {
-      return throwError(errorMesaage);
+      return throwError(errorMessage);
     }
     switch (errorRes.error.error.message) {
       case 'EMAIL_EXISTS':
-        errorMesaage = 'This email already exists';
+        errorMessage = 'This email already exists';
         break;
 
       case 'EMAIL_NOT_FOUND':
-        errorMesaage = 'This email does not exist';
+        errorMessage = 'This email does not exist';
         break;
 
       case 'INVALID_PASSWORD':
-        errorMesaage = 'Wrong password!';
+        errorMessage = 'Wrong password!';
         break;
     }
-    return throwError(errorMesaage);
+    return throwError(errorMessage);
   }
 
   autoLogin(): void {
