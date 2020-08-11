@@ -3,16 +3,16 @@ import {
   ComponentFactoryResolver,
   OnDestroy,
   OnInit,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceholderDirective } from '../shared/placeholder.directive';
 import * as fromApp from '../store/app.reducer';
-import { AuthResponseData, AuthService } from './auth.service';
+import { AuthService } from './auth.service';
 import * as AuthActions from './store/auth.actions';
 
 @Component({
@@ -26,6 +26,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   error: string = null;
 
   private closeSub: Subscription;
+  private storeSub: Subscription;
 
   @ViewChild(PlaceholderDirective) alertHost: PlaceholderDirective;
 
@@ -44,10 +45,13 @@ export class AuthComponent implements OnInit, OnDestroy {
     if (this.closeSub) {
       this.closeSub.unsubscribe();
     }
+    if (this.storeSub) {
+      this.storeSub.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
-    this.store.select('auth').subscribe((authState) => {
+   this.storeSub =  this.store.select('auth').subscribe((authState) => {
       this.isLoading = authState.loading;
       this.error = authState.authError;
       if (this.error) {
@@ -64,7 +68,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     const email = form.value.email;
     const password = form.value.password;
 
-    let authObs: Observable<AuthResponseData>;
+    // let authObs: Observable<AuthResponseData>;
 
     this.isLoading = true;
     if (this.isLoginMode) {
@@ -76,7 +80,12 @@ export class AuthComponent implements OnInit, OnDestroy {
         })
       );
     } else {
-      authObs = this.authService.signUp(email, password);
+      console.log(email, password);
+      // authObs = this.authService.signUp(email, password);
+      this.store.dispatch(new AuthActions.SingUpStart({
+        email,
+        password
+      }));
     }
 
     // authObs.subscribe(
@@ -97,7 +106,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   onHandleError(): void {
-    this.error = null;
+    this.store.dispatch(new AuthActions.ClearError());
   }
 
   private showErrorAlert(message: string): void {
